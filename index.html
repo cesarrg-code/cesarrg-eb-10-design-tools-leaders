@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Script and ideas by César Rodríguez -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 Design Tools Every Innovation Leader Needs to Know</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0A1E22;
+      --accent-orange: #E8663A;
+      --accent-blue: #7CC0D8;
+      --text-white: #F0F0F0;
+      --text-dim: #A0B8BE;
+      --text-dark: #6A8A92;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: 'Mulish', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-white);
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 8vw;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+      background: var(--bg-deep);
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .slide canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .slide-content.left-align {
+      text-align: left;
+    }
+
+    .title-big-number {
+      font-size: clamp(6rem, 18vw, 14rem);
+      font-weight: 900;
+      color: var(--accent-orange);
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+    }
+
+    .title-words {
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      font-weight: 800;
+      color: var(--accent-orange);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .title-sub {
+      font-size: clamp(1rem, 2.2vw, 1.6rem);
+      font-weight: 400;
+      color: var(--text-white);
+      margin-top: 12px;
+      letter-spacing: 0.01em;
+    }
+
+    .body-text {
+      font-size: clamp(1.1rem, 2.4vw, 1.65rem);
+      font-weight: 400;
+      color: var(--text-white);
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .body-text .highlight {
+      color: var(--accent-orange);
+      font-weight: 700;
+    }
+
+    .tool-number {
+      font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+      font-weight: 700;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    .tool-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--accent-blue);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .tool-desc {
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      font-weight: 400;
+      color: var(--text-white);
+      line-height: 1.65;
+      margin-bottom: 20px;
+      max-width: 650px;
+    }
+
+    .tool-section-label {
+      font-size: clamp(0.85rem, 1.2vw, 1rem);
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 4px;
+    }
+
+    .tool-section-value {
+      font-size: clamp(0.85rem, 1.2vw, 1rem);
+      font-weight: 400;
+      color: var(--text-dim);
+      line-height: 1.55;
+      margin-bottom: 16px;
+      max-width: 600px;
+    }
+
+    .tool-phase-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(124,192,216,0.12);
+      border: 1px solid rgba(124,192,216,0.25);
+      color: var(--accent-blue);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .tool-learn-more {
+      display: block;
+      margin-top: 12px;
+      font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+      color: var(--text-dark);
+    }
+
+    .tool-learn-more a {
+      color: var(--accent-orange);
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .tool-learn-more a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .letsgo-text {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      color: var(--text-white);
+      letter-spacing: -0.02em;
+    }
+
+    .beware-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      color: var(--accent-orange);
+      margin-bottom: 24px;
+    }
+
+    .cta-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .cta-title .orange { color: var(--accent-orange); }
+    .cta-title .white { color: var(--text-white); }
+
+    .cta-body {
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      color: var(--text-dim);
+      line-height: 1.6;
+      max-width: 550px;
+      margin: 16px auto 0;
+    }
+
+    .cta-link {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 14px 44px;
+      background: var(--accent-orange);
+      color: var(--text-white);
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .cta-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 24px rgba(232,102,58,0.35);
+    }
+
+    .slide-footer {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      z-index: 5;
+      font-size: 0.8rem;
+      color: var(--text-dark);
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slide-footer a {
+      color: var(--accent-orange);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-container {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-btn {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(10,30,34,0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      color: var(--text-white);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(232,102,58,0.2);
+      border-color: var(--accent-orange);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    .nav-counter {
+      font-size: 0.8rem;
+      color: var(--text-dark);
+      font-weight: 600;
+      min-width: 50px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: var(--accent-orange);
+      z-index: 200;
+      transition: width 0.4s ease;
+    }
+
+    .audience-tag {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 24px;
+      margin: 4px 4px;
+      font-size: clamp(0.85rem, 1.3vw, 1rem);
+      font-weight: 600;
+    }
+
+    .tag-corporate { background: rgba(74,144,226,0.15); border: 1px solid rgba(74,144,226,0.3); color: #6CB4F0; }
+    .tag-product { background: rgba(0,206,209,0.12); border: 1px solid rgba(0,206,209,0.25); color: #4DE8EB; }
+    .tag-entrepreneur { background: rgba(50,205,50,0.12); border: 1px solid rgba(50,205,50,0.25); color: #6AE86A; }
+
+    .toolbox-visual {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .toolbox-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    .toolbox-icon:nth-child(1) { background: rgba(232,102,58,0.15); border: 1px solid rgba(232,102,58,0.3); animation-delay: 0s; }
+    .toolbox-icon:nth-child(2) { background: rgba(124,192,216,0.15); border: 1px solid rgba(124,192,216,0.3); animation-delay: 0.3s; }
+    .toolbox-icon:nth-child(3) { background: rgba(50,205,50,0.12); border: 1px solid rgba(50,205,50,0.25); animation-delay: 0.6s; }
+    .toolbox-icon:nth-child(4) { background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.25); animation-delay: 0.9s; }
+    .toolbox-icon:nth-child(5) { background: rgba(0,206,209,0.12); border: 1px solid rgba(0,206,209,0.25); animation-delay: 1.2s; }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .audience-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .slide { padding: 40px 6vw; }
+      .slide-footer { bottom: 60px; right: 16px; }
+      .nav-container { bottom: 16px; }
+      .tool-section-value, .tool-desc { font-size: 0.95rem; }
+      .toolbox-icon { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- SLIDE 1: Title -->
+<section class="slide active" id="slide-0">
+  <canvas id="canvas-title"></canvas>
+  <div class="slide-content">
+    <div style="display:flex; align-items:flex-end; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <span class="title-big-number">10</span>
+      <div style="text-align:left;">
+        <div class="title-words">Design<br>Tools</div>
+      </div>
+    </div>
+    <div class="title-sub">every innovation leader needs to know</div>
+  </div>
+  <div class="slide-footer">
+    <a href="https://cesarrg.com" target="_blank">cesarrg.com</a>
+  </div>
+</section>
+
+<!-- SLIDE 2: Intro -->
+<section class="slide" id="slide-1">
+  <div class="slide-content">
+    <p class="body-text">
+      There are tons of methodologies and frameworks to lead innovation.<br><br>
+      These frameworks are valuable for abstracting problems that have already been solved and provide guidance for teams.<br><br>
+      But, at the core, all these frameworks <span class="highlight">use basic design techniques.</span><br><br>
+      Learning basic design skills will help you avoid becoming dependent on any specific methodology, and instead, <span class="highlight">leverage the best of each!</span>
+    </p>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 3: Personal — with toolbox visual -->
+<section class="slide" id="slide-2">
+  <div class="slide-content">
+    <div class="toolbox-visual">
+      <div class="toolbox-icon">🔍</div>
+      <div class="toolbox-icon">🗺️</div>
+      <div class="toolbox-icon">💡</div>
+      <div class="toolbox-icon">🧩</div>
+      <div class="toolbox-icon">⚡</div>
+    </div>
+    <p class="body-text">
+      I had the chance to test and use many design tools throughout my career.<br><br>
+      From core tools commonly found in many design thinking processes to accelerators used in service design.<br><br>
+      <span class="highlight">I've selected 10 of my favorite tools so you can also apply them to your projects!</span>
+    </p>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 4: Audience -->
+<section class="slide" id="slide-3">
+  <div class="slide-content">
+    <p class="body-text" style="margin-bottom:24px;">Whether you are a...</p>
+    <div class="audience-grid">
+      <span class="audience-tag tag-corporate">Corporate leader in digital transformation</span>
+      <span class="audience-tag tag-product">Product leader managing innovation</span>
+      <span class="audience-tag tag-entrepreneur">Entrepreneur starting your own company</span>
+    </div>
+    <p class="body-text" style="margin-top:32px;">
+      ...these tools will help you connect with customers, ideate, and ultimately <span class="highlight">create better solutions.</span>
+    </p>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 5: Beware -->
+<section class="slide" id="slide-4">
+  <div class="slide-content">
+    <div class="beware-title">Beware!</div>
+    <p class="body-text">
+      I want you to understand that these are only tools. They don't magically solve any problem. None of these tools have that power.<br><br>
+      <span class="highlight">You should adapt them to your reality and context. Test and blend them to your needs.</span><br><br>
+      This combination makes these tools extremely valuable!
+    </p>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 6: Let's Go -->
+<section class="slide" id="slide-5">
+  <canvas id="canvas-letsgo"></canvas>
+  <div class="slide-content">
+    <div class="letsgo-text">Let's go! 🚀</div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 7: Tool 1 - Desk Research -->
+<section class="slide" id="slide-6">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 01</div>
+    <div class="tool-title">Desk Research</div>
+    <div class="tool-desc">A time-boxed research method to consolidate context information from multiple sources.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">By consolidating unstructured data about the topic or customer you are trying to understand, you can leverage this information later to derive insights. Create a knowledge repository from books, videos, articles, or directly from the internet. Time-box it to make it more efficient.</div>
+    <span class="tool-phase-tag">Understanding the problem</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.uxpin.com/studio/blog/desk-research/" target="_blank">uxpin.com/studio/blog/desk-research</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 8: Tool 2 - In-depth Interviews -->
+<section class="slide" id="slide-7">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 02</div>
+    <div class="tool-title">In-depth Interviews</div>
+    <div class="tool-desc">Conversations with customers to map needs, context, and behaviors.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">Quantitative and qualitative data from customers are key to mapping pain points and opportunities. An in-depth interview is a great tool to dive into the nuances that sometimes a simple survey can't map.</div>
+    <span class="tool-phase-tag">Understanding the problem</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.thisisservicedesigndoing.com/methods/in-depth-interview" target="_blank">thisisservicedesigndoing.com</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 9: Tool 3 - Service Blueprints -->
+<section class="slide" id="slide-8">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 03</div>
+    <div class="tool-title">Service Blueprints</div>
+    <div class="tool-desc">A process map of a service mapping the key front-stage and back-stage touchpoints of the journey.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">I've adapted this tool in many projects. It is not only valuable for mapping all interactions and backend systems but also serves as a great communication tool with customers and stakeholders.</div>
+    <span class="tool-phase-tag">Understanding the problem</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Ideation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://servicedesigntools.org/tools/service-blueprint" target="_blank">servicedesigntools.org</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 10: Tool 4 - Customer Journey Maps -->
+<section class="slide" id="slide-9">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 04</div>
+    <div class="tool-title">Customer Journey Maps</div>
+    <div class="tool-desc">Maps of the different stages and actions of a customer during a process and the key interactions with your product or service.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">Similar to Service Blueprint, Customer Journeys are very versatile tools, serving as communication frameworks and knowledge repositories for the entire team.</div>
+    <span class="tool-phase-tag">All phases — ideation to implementation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.cesarrg.com/5-key-elements-for-customer-journey-maps-2/" target="_blank">cesarrg.com</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 11: Tool 5 - Shadowing -->
+<section class="slide" id="slide-10">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 05</div>
+    <div class="tool-title">Shadowing</div>
+    <div class="tool-desc">A technique that leverages observation as a way for understanding the customer journey. You act as a customer, following the steps and recording evidence of your findings.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">This is a great tool for creating empathy. Shadowing is commonly used early in the design journey, but you can leverage this tool whenever you want to gather more evidence of an existing or new journey.</div>
+    <span class="tool-phase-tag">Problem understanding</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Ideation</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Validation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.interaction-design.org/literature/article/shadowing-in-user-research-do-you-see-what-they-see" target="_blank">interaction-design.org</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 12: Tool 6 - Storyboards -->
+<section class="slide" id="slide-11">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 06</div>
+    <div class="tool-title">Storyboards</div>
+    <div class="tool-desc">Images representing the sequence of a process. They serve as illustrations of the customer, his context, and environment.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">You might have seen this technique in animation movies. It is a great way to visualize a journey, create empathy with the customer, and identify opportunities.</div>
+    <span class="tool-phase-tag">Ideation</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Validation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.nngroup.com/articles/storyboards-visualize-ideas/" target="_blank">nngroup.com</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 13: Tool 7 - CSD Matrix -->
+<section class="slide" id="slide-12">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 07</div>
+    <div class="tool-title">CSD Matrix</div>
+    <div class="tool-desc">This tool can be used across the team to refine the design challenge by mapping the knowns and unknowns. The matrix helps provide focus for the research phases and can become a knowledge repository throughout the process.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">I have the privilege to know the inventor of this tool! You can apply this tool in the early stages of a project to provide clarity on the certainties (C), assumptions (S), and doubts (D), and then work to clarify them.</div>
+    <span class="tool-phase-tag">All phases — ideation to implementation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.cesarrg.com/weekly-retro-what-you-dont-know/" target="_blank">cesarrg.com</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 14: Tool 8 - Mental Models -->
+<section class="slide" id="slide-13">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 08</div>
+    <div class="tool-title">Mental Models</div>
+    <div class="tool-desc">Mental models represent our beliefs. This tool is a systematic way of mapping customers' mental models.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">Mental models can help you gather new perspectives from your customers and understand their intentions behind actions. This can become a strong tool to dive deep in the "why".</div>
+    <span class="tool-phase-tag">Understanding the problem</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Ideation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.cesarrg.com/mental-models/" target="_blank">cesarrg.com/mental-models</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 15: Tool 9 - Time Machine -->
+<section class="slide" id="slide-14">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 09</div>
+    <div class="tool-title">Time Machine</div>
+    <div class="tool-desc">Our history hides many insights. This tool helps evaluate a topic from the lens of past, current, and future scenarios.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">You can combine this tool with your desk research to bring additional context on the evolution of a topic, behavior, or domain over time. Research how we solved a problem in the past, what are the existing solutions, and what the are trending ideas. Use this information to identify patterns.</div>
+    <span class="tool-phase-tag">Understanding the problem</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Ideation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.cesarrg.com/time-machine/" target="_blank">cesarrg.com/time-machine</a> · <a href="http://www.theservicestartup.com/" target="_blank">theservicestartup.com</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 16: Tool 10 - F-E-P Matrix -->
+<section class="slide" id="slide-15">
+  <div class="slide-content left-align">
+    <div class="tool-number">Tool 10</div>
+    <div class="tool-title">F-E-P Matrix</div>
+    <div class="tool-desc">A matrix to segregate features across Functional (F), Excitement (E), and Performance (P) categories.</div>
+    <div class="tool-section-label">Common applications:</div>
+    <div class="tool-section-value">This is a great tool for feature prioritization. Ensure you are covering the core needs of your customers before providing the "wow" features. This matrix helps you organize the features across the domains based on the priorities.</div>
+    <span class="tool-phase-tag">Ideation</span>
+    <span class="tool-phase-tag" style="margin-left:6px;">Implementation</span>
+    <div class="tool-learn-more">Learn more: <a href="https://www.cesarrg.com/weekly-retro-functional-performance-and-excitement/" target="_blank">cesarrg.com</a> · <a href="http://www.theservicestartup.com/" target="_blank">theservicestartup.com</a></div>
+  </div>
+  <div class="slide-footer"><span>César Rodríguez</span></div>
+</section>
+
+<!-- SLIDE 17: CTA -->
+<section class="slide" id="slide-16">
+  <canvas id="canvas-cta"></canvas>
+  <div class="slide-content">
+    <div class="cta-title">
+      <span class="orange">Useful?</span> <span class="white">Reshare</span>
+    </div>
+    <p class="cta-body">
+      Like these tools? Share them with a colleague who needs to hear this!<br><br>
+      Every week I share knowledge bites on design, tech innovation, and creativity.
+    </p>
+    <a class="cta-link" href="https://www.cesarrg.com/#/portal/signup" target="_blank">Follow</a>
+  </div>
+  <div class="slide-footer">
+    <a href="https://cesarrg.com" target="_blank">cesarrg.com</a>
+  </div>
+</section>
+
+<!-- Navigation -->
+<div class="nav-container">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>‹</button>
+  <span class="nav-counter" id="navCounter">1 / 17</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
+</div>
+
+<script>
+const totalSlides = 17;
+let currentSlide = 0;
+let isTransitioning = false;
+
+function changeSlide(dir) {
+  if (isTransitioning) return;
+  const next = currentSlide + dir;
+  if (next < 0 || next >= totalSlides) return;
+  isTransitioning = true;
+  document.getElementById('slide-' + currentSlide).classList.remove('active');
+  currentSlide = next;
+  setTimeout(() => {
+    document.getElementById('slide-' + next).classList.add('active');
+    updateNav();
+    isTransitioning = false;
+  }, 100);
+}
+
+function updateNav() {
+  document.getElementById('navCounter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+  document.getElementById('progressBar').style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+});
+
+updateNav();
+
+// ============================================================
+// Animation inspired by "The Way of Code" by Rick Rubin
+// Creative interpretation for this presentation
+// ============================================================
+
+// TITLE — Orbital Constellation
+(function() {
+  const canvas = document.getElementById('canvas-title');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  const particles = [];
+  const N = 60;
+
+  function resize() { w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < N; i++) {
+    particles.push({
+      angle: (i / N) * Math.PI * 2,
+      orbit: 120 + Math.random() * 200,
+      speed: (0.0003 + Math.random() * 0.0005) * (Math.random() > 0.5 ? 1 : -1),
+      size: 1 + Math.random() * 2.5,
+      phase: Math.random() * Math.PI * 2,
+      breathAmp: 10 + Math.random() * 30,
+    });
+  }
+
+  let t = 0;
+  function draw() {
+    if (currentSlide !== 0) { requestAnimationFrame(draw); return; }
+    t += 0.016;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w * 0.5, cy = h * 0.5;
+
+    const pos = particles.map(p => {
+      const r = p.orbit + Math.sin(t * 0.5 + p.phase) * p.breathAmp;
+      return { x: cx + Math.cos(p.angle + t * p.speed * 60) * r, y: cy + Math.sin(p.angle + t * p.speed * 60) * r * 0.55 };
+    });
+
+    for (let i = 0; i < pos.length; i++) {
+      for (let j = i + 1; j < pos.length; j++) {
+        const dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 160) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(232,102,58,${(1 - d / 160) * 0.08})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(pos[i].x, pos[i].y);
+          ctx.lineTo(pos[j].x, pos[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    pos.forEach((p, i) => {
+      const pulse = 0.5 + 0.5 * Math.sin(t * 0.8 + particles[i].phase);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, particles[i].size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(124,192,216,${0.15 + pulse * 0.3})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// LET'S GO — Radial Burst
+(function() {
+  const canvas = document.getElementById('canvas-letsgo');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h;
+
+  function resize() { w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const rays = [];
+  for (let i = 0; i < 90; i++) {
+    rays.push({
+      angle: (i / 90) * Math.PI * 2,
+      length: 50 + Math.random() * 250,
+      speed: 0.2 + Math.random() * 0.8,
+      phase: Math.random() * Math.PI * 2,
+      width: 0.3 + Math.random() * 0.5,
+    });
+  }
+
+  let t = 0;
+  function draw() {
+    if (currentSlide !== 5) { requestAnimationFrame(draw); return; }
+    t += 0.016;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2;
+
+    rays.forEach(r => {
+      const len = r.length * (0.6 + 0.4 * Math.sin(t * r.speed + r.phase));
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(r.angle + t * 0.02) * len, cy + Math.sin(r.angle + t * 0.02) * len);
+      ctx.strokeStyle = `rgba(232,102,58,${0.04 + 0.06 * Math.sin(t * r.speed * 0.5 + r.phase)})`;
+      ctx.lineWidth = r.width;
+      ctx.stroke();
+    });
+
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 60);
+    grad.addColorStop(0, 'rgba(232,102,58,0.06)');
+    grad.addColorStop(1, 'rgba(232,102,58,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// CTA — Flowing Particle Wave
+(function() {
+  const canvas = document.getElementById('canvas-cta');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h;
+
+  function resize() { w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const dots = [];
+  for (let r = 0; r < 25; r++) {
+    for (let c = 0; c < 40; c++) {
+      dots.push({ baseX: (c / 39) * 1.2 - 0.1, baseY: (r / 24) * 1.2 - 0.1, phase: c * 0.3 + r * 0.2 });
+    }
+  }
+
+  let t = 0;
+  function draw() {
+    if (currentSlide !== 16) { requestAnimationFrame(draw); return; }
+    t += 0.016;
+    ctx.clearRect(0, 0, w, h);
+
+    dots.forEach(d => {
+      const px = d.baseX * w + Math.sin(t * 0.6 + d.phase) * 12;
+      const py = d.baseY * h + Math.cos(t * 0.4 + d.phase * 0.7) * 8;
+      const dist = Math.sqrt(Math.pow(px / w - 0.5, 2) + Math.pow(py / h - 0.5, 2));
+      ctx.beginPath();
+      ctx.arc(px, py, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(124,192,216,${Math.max(0.02, 0.08 - dist * 0.08)})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+</body>
+</html>
